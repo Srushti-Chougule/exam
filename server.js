@@ -5,6 +5,7 @@ const path = require("path");
 const bcrypt = require("bcryptjs");
 const cors = require("cors");
 const session = require("express-session");
+require("dotenv").config();
 
 const app = express();
 
@@ -26,13 +27,10 @@ app.use(
 app.use(express.static(path.join(__dirname, "public")));
 
 // -------------------- MONGODB CONNECTION --------------------
-const MONGO_URI = "mongodb://127.0.0.1:27017/myappdb";
+const MONGO_URI = process.env.MONGODB_URI.replace('/?', '/myappdb?');
 
 mongoose
-  .connect(MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
